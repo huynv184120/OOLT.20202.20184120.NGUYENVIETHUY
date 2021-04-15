@@ -6,12 +6,10 @@ import java.util.ArrayList;
 public class Books extends Media{
     private List<String> authors = new ArrayList<String>();
 
+    
     public Books(String title, String category, float cost, List<String> authors)
     {
-        this.title = title;
-        this.category = category;
-        this.cost = cost;
-
+        super(title,category,cost);
         setAuthors(authors);
     }
 
@@ -39,7 +37,7 @@ public class Books extends Media{
         if(authors.contains(author))
         {
             authors.remove(authors.indexOf(author));
-            System.out.println("Remove successfully");
+            System.out.println("Remove successfull");
         }else{
             System.out.println(author + "does not exist in the list");
         }
@@ -47,6 +45,6 @@ public class Books extends Media{
 
     public void display()
     {
-        System.out.println(getTitle() + " - " + getCategory() + ": " + getCost() + "$");
+        System.out.println("TITLE : "+getTitle() + " CATREROGY:  " + getCaterogy() + " COST: " + getCost() + "$");
     }
 }

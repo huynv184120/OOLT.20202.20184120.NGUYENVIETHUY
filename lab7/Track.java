@@ -12,20 +12,20 @@ public class Track implements Playable{
     public String getTitle() {
         return title;
     }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public int getLength() {
         return length;
     }
+    
+    
+    public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public void setLength(int length) {
-        this.length = length;
-    }
+	public void setLength(int length) {
+		this.length = length;
+	}
 
-    @Override
+	@Override
     public void play() {
         System.out.println("Playing DVD: " + getTitle());
         System.out.println("DVD length: " + getLength());
