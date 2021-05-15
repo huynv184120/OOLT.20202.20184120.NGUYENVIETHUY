@@ -37,6 +37,8 @@ import java.util.List;
 
 import javax.swing.JTextArea;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.naming.LimitExceededException;
 import javax.swing.AbstractListModel;
 import javax.swing.JComboBox;
 import java.awt.Font;
@@ -135,16 +137,21 @@ public class GUIAism extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				Order order;
 				String nameOrder = new String(enterNameOrder_textField.getText());
-				if(nameOrder.length()==0) {
-					order = new Order();
+				try {
+					if(nameOrder.length()==0) {
+						order = new Order();
+					}
+					else {
+						order = new Order(nameOrder);
+					}
+					listOrder.addElement(order);
+					chooseorder.addItem(order);
+					chooseOderDp.addItem(order);
+					order_list.setModel(listOrder);	
+				}catch(LimitExceededException ex){
+					JOptionPane.showMessageDialog(null,ex.getMessage());
+					System.out.print(ex.getLocalizedMessage());
 				}
-				else {
-					order = new Order(nameOrder);
-				}
-				listOrder.addElement(order);
-				chooseorder.addItem(order);
-				chooseOderDp.addItem(order);
-				order_list.setModel(listOrder);			
 			}			
 		});
 		add_oder_panel.add(addOrder_button);
@@ -282,7 +289,16 @@ public class GUIAism extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				Order order =(Order)chooseorder.getSelectedItem();
+				int numberTrack = Integer.parseInt(lenghtcd.getText());
 				CompactDisc cd = new CompactDisc(titlecd.getText(),categorycd.getText(),Float.parseFloat(costcd.getText()),directorycd.getText(),Integer.parseInt(lenghtcd.getText()),artistcd.getText());
+				for(int i = 0 ; i < numberTrack ;i++) {
+					String title_track =JOptionPane.showInputDialog(null,"title of track " + i,
+					        "track"+i, JOptionPane.INFORMATION_MESSAGE);
+					int lenght_track = Integer.parseInt(JOptionPane.showInputDialog(null,"lenght of track " + i,
+					        "track"+i, JOptionPane.INFORMATION_MESSAGE)) ;
+					Track track = new Track(title_track, lenght_track);
+					cd.addTrack(track);
+				}
 				order.addMedia(cd);
 			}
 			
@@ -340,19 +356,16 @@ public class GUIAism extends JFrame {
 		panel_dvd.add(adddvd);
 		
 		JPanel panel_1 = new JPanel();
-		tabbedPane.addTab("Display/Delete_Item", null, panel_1, null);
+		tabbedPane.addTab("Pay/Delete_Item", null, panel_1, null);
 		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.Y_AXIS));
 		
 		JPanel panel_2 = new JPanel();
 		panel_1.add(panel_2);
 		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.X_AXIS));
 		
-		JLabel lblNewLabel_8 = new JLabel("choose order");
-		panel_2.add(lblNewLabel_8);
-		
 		panel_2.add(chooseOderDp);
 		
-		JButton display = new JButton("display");
+		JButton display = new JButton("displayOder");
 		display.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -376,7 +389,7 @@ public class GUIAism extends JFrame {
 		JPanel panel_4 = new JPanel();
 		panel_1.add(panel_4);
 		
-		JButton deleteItem = new JButton("delete");
+		JButton deleteItem = new JButton("delete items");
 		deleteItem.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -394,6 +407,26 @@ public class GUIAism extends JFrame {
 			}
 		});
 		panel_4.add(deleteItem);
+		JLabel lblNewLabel_8 = new JLabel("0$");
+		
+		JButton sum_bt = new JButton("caculate money");
+		sum_bt.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+		
+				Order order = (Order)chooseOderDp.getSelectedItem();
+				double cost = 0;
+				
+				for(Media item : order.getItemsOrdered()) {
+					cost += item.getCost();
+				}
+				lblNewLabel_8.setText(cost+" $");
+
+			}
+		});
+		panel_4.add(sum_bt);
+		
+		panel_4.add(lblNewLabel_8);
 
 
 	}
