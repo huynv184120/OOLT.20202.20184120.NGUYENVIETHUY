@@ -37,7 +37,7 @@ public abstract class Media {
 	public boolean equals(Object obj) {
 		try {
 			Media obj1 =(Media)obj;
-			return (getTitle() == obj1.getTitle()) && (getCost() == obj1.getCost()) ;
+			return ((getTitle().equals(obj1.getTitle())) && (getCost() == obj1.getCost())) ;
 		}catch(NullPointerException e){
 			System.out.print("ERROR: Null object can not equal !");
 		}catch(ClassCastException e) {
