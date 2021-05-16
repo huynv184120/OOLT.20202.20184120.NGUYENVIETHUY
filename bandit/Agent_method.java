@@ -1,3 +1,4 @@
+package Bandit;
 import java.util.Random;
 
 public class Agent_method {
@@ -24,20 +25,19 @@ public class Agent_method {
            int yourAction = 0;
             //TODO: return a number between 0 and nAction as the id of desiring action
            update(pastReward, pastActionId);
-           if(sumNumberActionTaken<10*numAction) {
-        	   yourAction = rn.nextInt()%(numAction);
+           if(sumNumberActionTaken<15*numAction){
+        	   yourAction = rn.nextInt(numAction);
+           }else {
+           int p = rn.nextInt(10000)/10000;
+           if(p > 0.1) {
+        	   for(int i =0;i<numAction;i++)
+        		   if(meanvalueActiontb[yourAction]<=meanvalueActiontb[i])
+        			   yourAction=i;
+           }else {
+        	   yourAction = rn.nextInt(numAction);
            }
-           
-           double p = rn.nextInt()%(1000000)/1000000;
-           if(p<0.9) {
-        	   for(int i=0 ; i<numAction;i++) {
-        		   if(meanvalueActiontb[i]>meanvalueActiontb[yourAction]) {
-        			   yourAction = i;
-        		   }
-        	   }
            }
-        
-           sumNumberActionTaken++;
+            sumNumberActionTaken++;
             assert (yourAction >= 0 && yourAction < this.numAction) : "False action taken";
             return yourAction;   
         }
