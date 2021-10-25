@@ -7,7 +7,6 @@ public class DateTest {
 		time = new MyDate(3,24,2000);
 		time.print();
 		time = new MyDate();
-		time.print();
 		time.accept();
 		time.print();
 	}
